@@ -1,4 +1,9 @@
+"use client";
+
+import { useState } from "react";
+
 function Posts() {
+  useState();
   return (
     <ul>
       <li>게시글1</li>
