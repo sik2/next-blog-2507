@@ -1,19 +1,24 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function PostDetail() {
   const params = useParams();
   const { id } = params;
 
-  console.log(id);
-  useState();
+  const [post, setPost] = useState({});
+  useEffect(() => {
+    fetch(`https://dummyjson.com/posts/${id}`)
+      .then((res) => res.json())
+      .then((res) => setPost(res));
+  }, []);
 
   return (
     <>
       <h1>{id}번</h1>
-      <div>게시글 상세</div>
+      <div className="text-2xl">{post.title}</div>
+      <p>{post.body}</p>
     </>
   );
 }
