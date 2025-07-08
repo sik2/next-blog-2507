@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 function Posts() {
@@ -8,17 +9,20 @@ function Posts() {
   useEffect(() => {
     fetch("https://dummyjson.com/posts")
       .then((res) => res.json())
-      .then((res) => {
-        setPosts(res.posts);
-        console.log(res.posts);
-      });
+      .then((res) => setPosts(res.posts));
   }, []);
 
   return (
     <ul>
       {posts.map((post) => (
-        <li>
-          {post.id} / {post.title}
+        <li key={post.id}>
+          {post.id} /
+          <Link
+            href={`/posts/${post.id}`}
+            className="p-2 rounded hover:bg-gray-100"
+          >
+            {post.title}
+          </Link>
         </li>
       ))}
     </ul>
