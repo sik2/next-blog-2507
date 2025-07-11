@@ -2,14 +2,20 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
 
 function Posts() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<
+    Array<{ id: number; title: string; content: string }>
+  >([]);
+
+  const fetchData = async () => {
+    let { data: posts, error } = await supabase.from("posts").select("*");
+    setPosts(posts ?? []);
+  };
 
   useEffect(() => {
-    fetch("https://dummyjson.com/posts")
-      .then((res) => res.json())
-      .then((res) => setPosts(res.posts));
+    fetchData();
   }, []);
 
   return (
