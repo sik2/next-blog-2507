@@ -21,7 +21,10 @@ function PostDetail() {
   };
 
   const fetchComments = async () => {
-    const { data, error } = await supabase.from("comments").select("*");
+    const { data, error } = await supabase
+      .from("comments")
+      .select("*")
+      .eq("post_id", id);
     setComments(data);
   };
 
