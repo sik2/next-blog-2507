@@ -1,14 +1,22 @@
 "use client";
 
+import { supabase } from "@/lib/supabase";
 import { useState } from "react";
 
 function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(email, password);
+    const { error } = await supabase.auth.signUp({ email, password });
+
+    if (error) {
+      alert(error.message);
+      console.log(error);
+    } else {
+      alert("회원가입 성공");
+    }
   };
 
   return (
