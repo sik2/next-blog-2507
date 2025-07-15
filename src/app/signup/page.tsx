@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { useState } from "react";
 
@@ -7,9 +8,11 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { signUp } = useAuth();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { error } = await signUp(email, password);
 
     if (error) {
       alert(error.message);

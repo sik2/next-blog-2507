@@ -1,43 +1,10 @@
 "use client";
 
-import { supabase } from "@/lib/supabase";
-import { User } from "@supabase/supabase-js";
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 function Nav() {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-      setIsLoading(false);
-    };
-
-    getUser();
-
-    // 인증 상태(로그인/로그아웃) 변경을 감지하는 리스너
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-      setIsLoading(false);
-    });
-    // 클인업 함수 -> 컨포넌트가 언마운트 되거나 useEffect가 재실행되기 전
-    // 이벤트 리스터 중복 호출 방지
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const router = useRouter();
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push("/signin");
-  };
+  const { isLoading, user, signOut } = useAuth();
 
   if (isLoading) {
     return <>로딩중...</>;
@@ -54,7 +21,7 @@ function Nav() {
       {user ? (
         <>
           <span>{user.email} 님</span>
-          <button onClick={handleLogout}>로그아웃</button>
+          <button onClick={signOut}>로그아웃</button>
         </>
       ) : (
         <>

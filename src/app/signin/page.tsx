@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -7,15 +8,12 @@ import { useState } from "react";
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const router = useRouter();
+  const { signIn } = useAuth();
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { error } = await signIn(email, password);
 
     if (error) {
       alert(error.message);
