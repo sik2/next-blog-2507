@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 function Nav() {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getUser = async () => {
@@ -15,6 +16,7 @@ function Nav() {
         data: { user },
       } = await supabase.auth.getUser();
       setUser(user);
+      setIsLoading(false);
     };
 
     getUser();
@@ -24,6 +26,7 @@ function Nav() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+      setIsLoading(false);
     });
     // 클인업 함수 -> 컨포넌트가 언마운트 되거나 useEffect가 재실행되기 전
     // 이벤트 리스터 중복 호출 방지
@@ -35,6 +38,10 @@ function Nav() {
     await supabase.auth.signOut();
     router.push("/signin");
   };
+
+  if (isLoading) {
+    return <>로딩중...</>;
+  }
 
   return (
     <nav className="flex">

@@ -9,14 +9,21 @@ function Posts() {
     Array<{ id: number; title: string; content: string }>
   >([]);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const fetchData = async () => {
     let { data: posts, error } = await supabase.from("posts").select("*");
     setPosts(posts ?? []);
+    setIsLoading(false);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  if (isLoading) {
+    return <>로딩중...</>;
+  }
 
   return (
     <ul>

@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 
 function PostDetail() {
   const [post, setPost] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
   const [comments, setComments] = useState([]);
   const params = useParams();
   const { id } = params;
@@ -31,7 +33,12 @@ function PostDetail() {
   useEffect(() => {
     fetchData();
     fetchComments();
+    setIsLoading(false);
   }, []);
+
+  if (isLoading) {
+    return <>로딩중...</>;
+  }
 
   return (
     <>
