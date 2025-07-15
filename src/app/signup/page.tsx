@@ -21,6 +21,7 @@ function Signup() {
 
   return (
     <>
+      <h1>회원가입</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="email"
