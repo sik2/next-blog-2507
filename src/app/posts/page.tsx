@@ -27,6 +27,10 @@ function Posts() {
 
   return (
     <ul>
+      <h1 className="text-2xl">게시글 목록</h1>
+      <Link href="/posts/new" className="text-blue-500 underline">
+        새 글 작성
+      </Link>
       {posts.map((post) => (
         <li key={post.id}>
           {post.id} /
